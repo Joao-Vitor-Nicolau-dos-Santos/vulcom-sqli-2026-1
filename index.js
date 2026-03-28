@@ -27,11 +27,13 @@ app.get('/', (req, res) => {
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    
-    // CONSULTA SQL VULNERÁVEL 🚨
-    const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
-    
-    db.all(query, [], (err, rows) => {
+
+    const query = "SELECT * FROM users WHERE username = ? AND password = ?"
+
+    // // CONSULTA SQL VULNERÁVEL 🚨
+    //     const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+
+    db.all(query, [username, password], (err, rows) => {
         if (err) {
             return res.send('Erro no servidor');
         }
